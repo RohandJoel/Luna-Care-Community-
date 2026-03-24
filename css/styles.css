@@ -33,6 +33,15 @@
 html { scroll-behavior: smooth; }
 body { font-family: 'Nunito', sans-serif; background: var(--sand); color: var(--stone); overflow-x: hidden; }
 
+body {
+  background: var(--sand);
+  color: var(--stone);
+}
+body {
+  background: var(--sand);
+  color: var(--stone);
+}
+
 /* ── AUTH GATE (must sign in to see app) ── */
 .auth-gate {
   display: flex;
