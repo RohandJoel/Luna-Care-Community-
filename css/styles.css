@@ -1,19 +1,24 @@
 @import url('https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,600;1,400&family=Nunito:wght@300;400;500;600&display=swap');
 
 :root {
-  --sand:    #f7f3ee;
-  --sand2:   #efe9e0;
-  --terra:   #c47c5a;
-  --terra-lt:#e9c3b0;
-  --terra-dk:#9e5a3a;
-  --teal:    #4a9087;
-  --teal-lt: #c8e0dd;
-  --teal-dk: #336860;
-  --stone:   #3d3530;
-  --muted:   #8a7f78;
-  --white:   #ffffff;
-  --card:    #fdfaf7;
-  --error:   #c0392b;
+  --sand: #fdf6ff;              /* background (cream + purple tint) */
+  --sand2: #f8e9ff;
+
+  --terra: rgb(250, 178, 250); /* MAIN COLOR */
+  --terra-lt: rgb(255, 210, 255);
+  --terra-dk: rgb(200, 120, 200);
+
+  --teal: #9b59b6;             /* secondary purple */
+  --teal-lt: #d7bde2;
+  --teal-dk: #6c3483;
+
+  --stone: #4a235a;            /* text color */
+  --muted: #7d5a7d;
+
+  --white: #ffffff;
+  --card: #ffffff;
+
+  --error: #e74c3c;
   --success: #27ae60;
 }
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
