@@ -1,24 +1,32 @@
 @import url('https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,600;1,400&family=Nunito:wght@300;400;500;600&display=swap');
 
 :root {
-  --sand: #fdf6ff;              /* background (cream + purple tint) */
-  --sand2: #f8e9ff;
+  /* BACKGROUND (soft, not bright) */
+  --sand: #faf7fc;
+  --sand2: #f3e8ff;
 
-  --terra: rgb(250, 178, 250); /* MAIN COLOR */
-  --terra-lt: rgb(255, 210, 255);
-  --terra-dk: rgb(200, 120, 200);
+  /* PRIMARY (your theme color — toned down) */
+  --terra: #c084d4;
+  --terra-lt: #e9d5f5;
+  --terra-dk: #9b59b6;
 
-  --teal: #9b59b6;             /* secondary purple */
+  /*  SECONDARY (for accents, hover, tags) */
+  --teal: #a569bd;
   --teal-lt: #d7bde2;
   --teal-dk: #6c3483;
 
-  --stone: #4a235a;            /* text color */
+  /* TEXT COLORS (very important for readability) */
+  --stone: #4a235a;
   --muted: #7d5a7d;
 
+  /* BASE UI */
   --white: #ffffff;
   --card: #ffffff;
 
+  /* ERROR */
   --error: #e74c3c;
+
+  /* SUCCESS */
   --success: #27ae60;
 }
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
