@@ -1,0 +1,10 @@
+{
+  "hosting": {
+    "public": "FemCare Community",
+    "ignore": [
+      "firebase.json",
+      "**/.*",
+      "**/node_modules/**"
+    ]
+  }
+}

@@ -1,0 +1,6 @@
+# Firebase service account key (never commit)
+scripts/serviceAccountKey.json
+**/serviceAccountKey.json
+*.key.json
+
+node_modules/

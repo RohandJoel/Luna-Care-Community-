@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Push seed data to Firestore</title>
+  <style>
+    body { font-family: system-ui, sans-serif; max-width: 420px; margin: 40px auto; padding: 20px; }
+    h1 { font-size: 1.25rem; margin-bottom: 16px; }
+    .box { margin-bottom: 16px; }
+    label { display: block; font-size: 0.85rem; margin-bottom: 4px; color: #555; }
+    input { width: 100%; padding: 10px 12px; border: 1px solid #ddd; border-radius: 8px; font-size: 1rem; box-sizing: border-box; }
+    button { padding: 10px 20px; border-radius: 8px; font-size: 1rem; cursor: pointer; border: none; background: #c47c5a; color: #fff; font-weight: 600; }
+    button:hover { background: #9e5a3a; }
+    button:disabled { opacity: 0.6; cursor: not-allowed; }
+    .btn-push { margin-top: 12px; background: #4a9087; }
+    .btn-push:hover { background: #336860; }
+    #log { margin-top: 20px; font-size: 0.85rem; color: #333; white-space: pre-wrap; background: #f5f5f5; padding: 12px; border-radius: 8px; min-height: 80px; }
+    .err { color: #c0392b; }
+    .ok { color: #27ae60; }
+  </style>
+</head>
+<body>
+  <h1>Push resource data to Firestore</h1>
+  <p style="font-size: 0.9rem; color: #666;">Sign in with your Firebase account, then click to push 8 sample resources to the <code>resources</code> collection.</p>
+
+  <div id="authBox" class="box">
+    <label>Email</label>
+    <input type="email" id="email" placeholder="your@email.com">
+    <label style="margin-top:10px">Password</label>
+    <input type="password" id="password" placeholder="••••••••">
+    <button id="btnSignIn" style="margin-top:12px">Sign in</button>
+  </div>
+
+  <div id="signedInBox" style="display:none;">
+    <p class="ok">Signed in. You can push seed data.</p>
+    <button id="btnPush" class="btn-push">Push seed data to Firestore</button>
+    <button id="btnSignOut" style="margin-left:8px; background:#666;">Sign out</button>
+  </div>
+
+  <div id="log"></div>
+
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+    import { getAuth, signInWithEmailAndPassword, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+    import { getFirestore, collection, addDoc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyCKfKMpkJZXtyWPKhhc5pnO9akVLekxdyc",
+      authDomain: "femcare-community.firebaseapp.com",
+      projectId: "femcare-community",
+      storageBucket: "femcare-community.firebasestorage.app",
+      messagingSenderId: "235546591574",
+      appId: "1:235546591574:web:6c55647a694ef91947d6f7"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+    const db = getFirestore(app);
+
+    const resources = [
+      { title: 'What is Menstruation?', summary: 'A beginner-friendly guide to understanding what periods are and why they happen.', content: 'Menstruation is the monthly shedding of the lining of the uterus (womb).\n\n**Why it happens**\nYour body prepares for a possible pregnancy each month. When pregnancy does not occur, the lining is released as a period. This is a normal, healthy process.\n\n**When it starts**\nMost people get their first period between ages 10 and 15. Everyone is different.', category: 'period', read_mins: 4, icon: '🩸', tags: 'beginner,period' },
+      { title: 'How to Track Your Cycle', summary: 'Learn why tracking your period matters and how to do it simply and accurately.', content: 'Tracking your cycle helps you know when your next period is due and can help you understand your body better.\n\n**Simple ways to track**\nUse a calendar or an app. Mark the first day of your period each month. After a few months, you may see a pattern.\n\n**What to note**\nFirst day of period, how many days it lasts, and any symptoms (cramps, mood).', category: 'period', read_mins: 5, icon: '📅', tags: 'tracking,cycle' },
+      { title: 'Managing Period Cramps Naturally', summary: 'Practical, natural ways to reduce period pain without relying only on medication.', content: 'Many people get cramps during their period. Here are gentle ways to ease them.\n\n**Heat**\nA warm compress or hot water bottle on your lower belly can relax muscles and reduce pain.\n\n**Movement**\nLight walking or gentle stretching can help. You don\'t have to do a full workout.\n\n**Rest**\nSometimes resting and breathing slowly is enough. Listen to your body.', category: 'health', read_mins: 6, icon: '😣', tags: 'cramps,natural' },
+      { title: "Period Products: A Beginner's Guide", summary: 'Pads, tampons, menstrual cups, and period underwear explained.', content: 'There are several ways to manage your period. Choose what feels right for you.\n\n**Pads**\nStick to your underwear. Easy to use and good for beginners. Change every few hours.\n\n**Tampons**\nWorn inside the body. Read the leaflet and wash your hands before and after.\n\n**Menstrual cups**\nReusable silicone cups. They can last years and are eco-friendly.\n\n**Period underwear**\nSpecial underwear that absorbs flow. Great as backup or on lighter days.', category: 'hygiene', read_mins: 7, icon: '🧴', tags: 'products,hygiene' },
+      { title: 'PMS, Hormones & Your Mood', summary: 'Why you feel emotional before your period, and how to take care of yourself.', content: 'Mood changes before your period are common and are often linked to hormones.\n\n**What is PMS?**\nPremenstrual syndrome (PMS) can include mood swings, tiredness, or irritability in the days before your period. It is normal.\n\n**What helps**\nRest, light exercise, and talking to someone you trust can help. If feelings are very strong or affect your life a lot, a doctor or nurse can advise you.', category: 'mood', read_mins: 6, icon: '🧠', tags: 'mood,pms' },
+      { title: 'What to Eat During Your Period', summary: 'Foods that help with cramps, fatigue, and mood — and what to avoid.', content: 'Eating well can ease some period symptoms.\n\n**Helpful foods**\nIron-rich foods (lentils, spinach, dates) help replace what you lose. Whole grains and fruit can keep energy steadier.\n\n**Foods to ease cramps**\nMagnesium-rich foods like bananas and dark leafy greens may help. Staying hydrated is important too.\n\n**What to limit**\nToo much salt or caffeine can make bloating or mood swings worse for some people.', category: 'nutrition', read_mins: 5, icon: '🌿', tags: 'nutrition,food' },
+      { title: 'Talking to a Trusted Adult', summary: 'Tips for starting the conversation with a parent, guardian, or school nurse.', content: 'Talking about periods can feel awkward at first, but adults are usually happy to help.\n\n**Who to talk to**\nA parent, guardian, school nurse, or another adult you trust.\n\n**What to say**\nYou can say: "I have some questions about periods" or "I\'d like to know more about what to expect."\n\n**Remember**\nThey have been through this or have helped others. It\'s okay to ask for pads, products, or just information.', category: 'general', read_mins: 4, icon: '👩‍👧', tags: 'support,family' },
+      { title: 'Period-Friendly Yoga Poses', summary: 'Simple yoga positions that ease cramps, reduce tension, and restore energy.', content: 'Gentle movement can ease period discomfort.\n\n**Child\'s pose**\nKneel, sit back on your heels, and fold forward. Rest your forehead on the floor. Breathe slowly. This can ease lower back and belly tension.\n\n**Cat-cow**\nOn hands and knees, alternate between arching and rounding your back. Move with your breath.\n\n**Rest**\nIf you don\'t feel like moving, rest. Resting is valid too.', category: 'health', read_mins: 5, icon: '🧘', tags: 'yoga,exercise' }
+    ];
+
+    function log(msg, isErr) {
+      const el = document.getElementById('log');
+      el.innerHTML += (isErr ? '<span class="err">' : '<span class="ok">') + msg + '</span>\n';
+      el.scrollTop = el.scrollHeight;
+    }
+
+    function clearLog() {
+      document.getElementById('log').innerHTML = '';
+    }
+
+    onAuthStateChanged(auth, (user) => {
+      document.getElementById('authBox').style.display = user ? 'none' : 'block';
+      document.getElementById('signedInBox').style.display = user ? 'block' : 'none';
+    });
+
+    document.getElementById('btnSignIn').onclick = async () => {
+      const email = document.getElementById('email').value.trim();
+      const password = document.getElementById('password').value;
+      if (!email || !password) { log('Enter email and password.', true); return; }
+      clearLog();
+      try {
+        await signInWithEmailAndPassword(auth, email, password);
+        log('Signed in.');
+      } catch (e) {
+        log('Sign in failed: ' + e.message, true);
+      }
+    };
+
+    document.getElementById('btnSignOut').onclick = () => signOut(auth);
+
+    document.getElementById('btnPush').onclick = async () => {
+      const btn = document.getElementById('btnPush');
+      btn.disabled = true;
+      clearLog();
+      log('Pushing data to Firestore...\n');
+      const col = collection(db, 'resources');
+      let added = 0;
+      try {
+        for (const r of resources) {
+          await addDoc(col, r);
+          added++;
+          log('Added: ' + r.title);
+        }
+        log('\nDone. Pushed ' + added + ' resources to your DB.');
+      } catch (e) {
+        log('Error: ' + e.message, true);
+        log('\nMake sure Firestore rules allow write for authenticated users.', true);
+      }
+      btn.disabled = false;
+    };
+  </script>
+</body>
+</html>
