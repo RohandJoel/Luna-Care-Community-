@@ -1,46 +1,58 @@
 @import url('https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,600;1,400&family=Nunito:wght@300;400;500;600&display=swap');
 
 :root {
-  /* BACKGROUND (soft, not bright) */
-  --sand: #faf7fc;
-  --sand2: #f3e8ff;
+  /* 🌤 BACKGROUND (clean + light) */
+  --sand: hsl(269, 49%, 88%);
+  --sand2: #f1edf7;
 
-  /* PRIMARY (your theme color — toned down) */
-  --terra: #c084d4;
-  --terra-lt: #e9d5f5;
-  --terra-dk: #9b59b6;
+  /* 💜 PRIMARY (USE LESS — only buttons, highlights) */
+  --terra: #bf62e7;
+  --terra-lt: #c488e7;
+  --terra-dk: #973dbb;
 
-  /*  SECONDARY (for accents, hover, tags) */
-  --teal: #a569bd;
-  --teal-lt: #d7bde2;
-  --teal-dk: #6c3483;
+  /* 🌿 ACCENT (NEW — gives contrast) */
+  --teal: #27ae60;
+  --teal-lt: #5fe396;
+  --teal-dk: #1b402a;
 
-  /* TEXT COLORS (very important for readability) */
-  --stone: #4a235a;
-  --muted: #7d5a7d;
+  /* 🖤 TEXT (clear readability) */
+  --stone: #2c1e35;
+  --muted: #6b5b73;
 
-  /* BASE UI */
-  --white: #ffffff;
+  /* ⚪ UI */
+  --white: #e7e2e2;
   --card: #ffffff;
 
-  /* ERROR */
+  /* ❌ / ✅ */
   --error: #e74c3c;
-
-  /* SUCCESS */
   --success: #27ae60;
 }
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 html { scroll-behavior: smooth; }
 body { font-family: 'Nunito', sans-serif; background: var(--sand); color: var(--stone); overflow-x: hidden; }
 
-body {
-  background: var(--sand);
-  color: var(--stone);
+button, .cta-primary {
+  background: var(--terra);
+  color: white;
 }
-body {
-  background: var(--sand);
-  color: var(--stone);
+
+button:hover {
+  background: var(--terra-dk);
 }
+
+.tag, .chip {
+  background: var(--teal-lt);
+  color: var(--teal-dk);
+}
+.tag, .chip {
+  background: var(--teal-lt);
+  color: var(--teal-dk);
+}
+.tag, .chip {
+  background: var(--teal-lt);
+  color: var(--teal-dk);
+}
+
 
 /* ── AUTH GATE (must sign in to see app) ── */
 .auth-gate {
