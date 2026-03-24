@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>LunaCare Community</title>
+<link rel="stylesheet" href="css/styles.css"/>
+</head>
+
+<body>
+
+<!-- TOAST CONTAINER -->
+<div class="toast-container" id="toastContainer"></div>
+
+<!-- NAV -->
+<nav>
+  <div class="brand" onclick="showPage('home')">
+    <div class="brand-mark">🌿</div>
+    <span class="brand-name">LunaCare Community</span>
+  </div>
+  <ul class="nav-links">
+    <li><button onclick="showPage('community')" id="nav-community">Discussions</button></li>
+    <li><button onclick="showPage('resources')" id="nav-resources">Resources</button></li>
+    <li><button onclick="showPage('stories')" id="nav-stories">Stories</button></li>
+    <li><button onclick="showPage('saved')" id="nav-saved">Saved</button></li>
+  </ul>
+  <div class="nav-right">
+    <div id="nav-user-box" class="nav-user-box" style="display:none;" onclick="showPage('profile')" title="Go to profile">
+      <div class="nav-user-avatar" id="nav-user-avatar">U</div>
+      <div class="nav-user-info">
+        <span class="nav-user-name" id="nav-user-name">User</span>
+        <span class="nav-user-status"><span class="nav-user-dot"></span> Online</span>
+      </div>
+    </div>
+    <button id="nav-signin" class="cta-primary cta-rect">Sign In</button>
+    <a class="btn-back" href="#">← LunaCare Home</a>
+  </div>
+</nav>
+
+<!-- ═══════════════════════ HOME PAGE ═══════════════════════ -->
+<div id="page-home" class="page active">
+  <section class="hero">
+    <div class="hero-text reveal">
+      <div class="hero-eyebrow">🌿 A safe, supportive space</div>
+      <h1>You belong here — <em>every question</em> is welcome.</h1>
+      <p class="hero-sub">Whether you're 11 or 40, this is a calm space to ask questions, share stories, and learn about menstrual health — without judgment.</p>
+      <div class="hero-ctas">
+        <button class="cta-primary" onclick="openModal('auth')">Join the Community</button>
+        <button class="cta-ghost" onclick="showPage('community')">Browse Discussions</button>
+      </div>
+    </div>
+    <div class="hero-art reveal">
+      <div class="art-circle ac1"></div>
+      <div class="art-circle ac2"></div>
+      <div class="art-circle ac3"></div>
+      <div class="art-card">
+        <div class="big-emoji">🌸</div>
+        <p>"I finally found a place where I could ask all my questions without feeling embarrassed."</p>
+      </div>
+    </div>
+  </section>
+  <div class="stats-bar reveal">
+    <div class="stat-item"><strong id="statMembers">2.8k+</strong><span>Members</span></div>
+    <div class="stat-item"><strong>All Ages</strong><span>Welcome</span></div>
+    <div class="stat-item"><strong id="statPosts">900+</strong><span>Discussions</span></div>
+    <div class="stat-item"><strong>Anonymous</strong><span>Posting available</span></div>
+  </div>
+  <div style="max-width:1100px;margin:48px auto;padding:0 clamp(20px,5vw,60px);display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:18px;">
+    <div class="story-card reveal" onclick="showPage('community')">
+      <div class="story-icon">💬</div>
+      <div class="story-title">Join the Discussion</div>
+      <div class="story-excerpt">Ask questions, get answers, and support others — anonymously or openly.</div>
+      <div class="story-by" style="color:var(--teal);">→ Go to Discussions</div>
+    </div>
+    <div class="story-card reveal" onclick="showPage('resources')">
+      <div class="story-icon">📖</div>
+      <div class="story-title">Resource Library</div>
+      <div class="story-excerpt">Expert-reviewed articles on periods, health, mood, hygiene and nutrition.</div>
+      <div class="story-by" style="color:var(--teal);">→ Browse Resources</div>
+    </div>
+    <div class="story-card reveal" onclick="showPage('stories')">
+      <div class="story-icon">✍️</div>
+      <div class="story-title">Community Stories</div>
+      <div class="story-excerpt">Real experiences from people just like you. Share your own story too.</div>
+      <div class="story-by" style="color:var(--teal);">→ Read Stories</div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════ COMMUNITY PAGE ═══════════════════════ -->
+<div id="page-community" class="page">
+  <div class="community-layout">
+    <div>
+      <div class="sec-head reveal">
+        <div class="sec-title">Discussions <span>&amp; Q&A</span></div>
+        <button class="sec-link" id="community-ask-btn" onclick="openPostModalOrAuth()" style="display:none;">+ Ask something</button>
+      </div>
+      <div class="tabs reveal">
+        <button class="tab active" onclick="filterTab(this,'all')">All Topics</button>
+        <button class="tab" onclick="filterTab(this,'period')">Period 🩸</button>
+        <button class="tab" onclick="filterTab(this,'health')">Body Health 🌿</button>
+        <button class="tab" onclick="filterTab(this,'mood')">Emotions 🧡</button>
+        <button class="tab" onclick="filterTab(this,'hygiene')">Hygiene 🧴</button>
+      </div>
+      <div class="discussion-search-row reveal">
+        <input type="text" id="discussionSearch" class="discussion-search-input" placeholder="🔍 Search by title…" oninput="onDiscussionSearchInput()"/>
+      </div>
+      <div class="post-box reveal" id="community-post-box" style="display:none;">
+        <div class="post-box-top">
+          <div class="you-avatar">🌸</div>
+          <textarea id="quickPost" placeholder="Ask a question or share something… this is a safe, calm space 💛"></textarea>
+        </div>
+        <div class="post-box-actions">
+          <label class="anon-toggle"><input type="checkbox" id="quickAnon"/> Post anonymously</label>
+          <select class="topic-select" id="quickTopic">
+            <option value="">Choose a topic…</option>
+            <option value="period">Period 🩸</option>
+            <option value="health">Body Health 🌿</option>
+            <option value="mood">Emotions 🧡</option>
+            <option value="hygiene">Hygiene 🧴</option>
+          </select>
+          <button class="post-btn" onclick="submitQuickPost()">Share</button>
+        </div>
+      </div>
+      <div class="disc-list" id="discList">
+        <div class="loading-row"><div class="spinner"></div> Loading discussions…</div>
+      </div>
+    </div>
+    <aside class="sidebar">
+      <div class="side-card reveal">
+        <h4>📖 Resource Library</h4>
+        <ul class="res-list" id="sidebarResources">
+          <li><button onclick="showPage('resources')"><span class="r-icon">🩸</span> What is menstruation?</button></li>
+          <li><button onclick="showPage('resources')"><span class="r-icon">📅</span> Track your cycle</button></li>
+          <li><button onclick="showPage('resources')"><span class="r-icon">😣</span> Managing cramps</button></li>
+          <li><button onclick="showPage('resources')"><span class="r-icon">🧴</span> Hygiene guide</button></li>
+          <li><button onclick="showPage('resources')"><span class="r-icon">🧠</span> Hormones &amp; mood</button></li>
+          <li><button onclick="showPage('resources')"><span class="r-icon">🌿</span> Nutrition tips</button></li>
+          <li><button onclick="showPage('resources')" style="color:var(--teal);font-weight:600;">→ Full Resource Library</button></li>
+        </ul>
+      </div>
+      <div class="side-card reveal">
+        <h4>🌱 Daily Wellness Tip</h4>
+        <div class="tip-box" id="tipBox"></div>
+        <div class="tip-nav" id="tipNav"></div>
+      </div>
+      <div class="side-card safe-card reveal">
+        <h4>💚 You Are Safe Here</h4>
+        <p>This space is moderated and welcoming to all ages. Anonymous posting is always available.</p>
+      </div>
+      <div class="side-card reveal">
+        <h4>🟢 Products </h4>
+        <div class="online-list">
+          <div class="online-chip"><span class="green-dot"></span> Sanitary Pads </div>
+          <div class="online-chip"><span class="green-dot"></span> Tampons </div>
+          <div class="online-chip"><span class="green-dot"></span> Menstural cup</div>
+          <div class="online-chip"><span class="green-dot"></span> Period panties </div>
+        </div>
+      </div>
+    </aside>
+  </div>
+</div>
+
+<!-- ═══════════════════════ RESOURCE LIBRARY PAGE ═══════════════════════ -->
+<div id="page-resources" class="page">
+  <div class="resource-page">
+    <div class="resource-page-header reveal">
+      <div class="sec-head" style="margin-bottom:12px;">
+        <h1 style="margin:0;font-size:1.75rem;">Resource <span>Library</span></h1>
+        <button class="sec-link" onclick="openModal('resource-add')">+ Add resource</button>
+      </div>
+      <p style="margin-top:0;">Expert-reviewed guides on menstrual health — written simply, for everyone. From first periods to nutrition to talking with a trusted adult.</p>
+    </div>
+    <div class="resource-search-row reveal">
+      <input type="text" id="resourceSearch" placeholder="🔍  Search resources — e.g. cramps, hygiene, nutrition…" oninput="searchResources()"/>
+    </div>
+    <div class="resource-layout">
+      <div class="resource-cats reveal" id="resourceCats">
+        <button class="active" onclick="filterResources(this,'')">🌿 All Resources <span class="cat-count" id="catCountAll"></span></button>
+        <button onclick="filterResources(this,'period')">🩸 Period <span class="cat-count" id="catCountPeriod"></span></button>
+        <button onclick="filterResources(this,'health')">💪 Body Health <span class="cat-count" id="catCountHealth"></span></button>
+        <button onclick="filterResources(this,'mood')">🧡 Emotions <span class="cat-count" id="catCountMood"></span></button>
+        <button onclick="filterResources(this,'hygiene')">🧴 Hygiene <span class="cat-count" id="catCountHygiene"></span></button>
+        <button onclick="filterResources(this,'nutrition')">🥗 Nutrition <span class="cat-count" id="catCountNutrition"></span></button>
+        <button onclick="filterResources(this,'general')">💬 General <span class="cat-count" id="catCountGeneral"></span></button>
+      </div>
+      <div class="resource-grid reveal" id="resourceGrid">
+        <div class="loading-row"><div class="spinner"></div> Loading resources…</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════ RESOURCE DETAIL PAGE ═══════════════════════ -->
+<div id="page-resource-detail" class="page">
+  <div class="resource-detail">
+    <button class="rd-back" onclick="showPage('resources')"> ← Back to Library </button>
+    <div id="resourceDetailContent">
+      <div class="loading-row"><div class="spinner"></div></div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════ STORIES PAGE ═══════════════════════ -->
+<div id="page-stories" class="page">
+  <div style="max-width:1100px;margin:0 auto;padding:48px clamp(20px,5vw,60px) 80px;">
+    <div class="sec-head reveal" style="margin-bottom:28px;">
+      <div class="sec-title">Community <span>Stories</span></div>
+      <button class="sec-link" onclick="openModal('story')">+ Share yours</button>
+    </div>
+    <p style="font-size:.95rem;color:var(--muted);max-width:560px;line-height:1.7;margin-bottom:36px;" class="reveal">Real experiences from people just like you — young girls, teens, parents, and educators. Every story is shared with care.</p>
+    <div class="stories-grid reveal" id="storiesGrid">
+      <div class="loading-row"><div class="spinner"></div> Loading stories…</div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════ SAVED PAGE ═══════════════════════ -->
+<div id="page-saved" class="page">
+  <div style="max-width:1100px;margin:0 auto;padding:48px clamp(20px,5vw,60px) 80px;">
+
+    <div class="sec-head reveal" style="margin-bottom:28px;">
+      <div class="sec-title">Saved <span>Discussions</span></div>
+      <p style="font-size:.95rem;color:var(--muted);max-width:560px;line-height:1.7;margin-bottom:36px;">
+Posts you've bookmarked for later.
+</p>
+    </div>
+
+    <div id="savedList"></div>
+
+  </div>
+</div>
+
+<!-- ═══════════════════════ PROFILE PAGE ═══════════════════════ -->
+<div id="page-profile" class="page">
+  <div class="profile-page">
+    <div class="profile-card reveal" id="profileCard">
+      <div class="loading-row"><div class="spinner"></div> Loading…</div>
+    </div>
+    <div class="profile-stats reveal" id="profileStats"></div>
+    <div class="profile-actions reveal" id="profileActions"></div>
+  </div>
+</div>
+
+<!-- ═══════════════════════ MODALS ═══════════════════════ -->
+
+<!-- AUTH MODAL -->
+<div class="overlay" id="modal-auth">
+  <div class="modal modal-auth">
+    <button class="modal-close" onclick="closeModal('auth')">✕</button>
+    <h2 id="authTitle">Welcome 🌿</h2>
+    <div class="modal-tabs">
+      <button class="modal-tab active" onclick="switchAuthTab('login')">Sign In</button>
+      <button class="modal-tab" onclick="switchAuthTab('register')">Create Account</button>
+    </div>
+    <div class="modal-error" id="authError"></div>
+    <div id="authFormLogin">
+      <input type="email" id="loginEmail" placeholder="Email address"/>
+      <input type="password" id="loginPassword" placeholder="Password"/>
+      <button class="cta-primary cta-rect" style="width:100%" onclick="doLogin()">Sign In</button>
+    </div>
+    <div id="authFormRegister" style="display:none">
+      <input type="text" id="regUsername" placeholder="Choose a username"/>
+      <input type="email" id="regEmail" placeholder="Email address"/>
+      <input type="password" id="regPassword" placeholder="Create a password (min 6 chars)"/>
+      <p class="modal-sub" style="margin-bottom:14px;font-size:.78rem;">You can always post anonymously — your username is optional for public posts.</p>
+      <button class="cta-primary cta-rect" style="width:100%" onclick="doRegister()">Create Account</button>
+    </div>
+  </div>
+</div>
+
+<!-- ADD RESOURCE MODAL -->
+<div class="overlay" id="modal-resource-add">
+  <div class="modal modal-resource-add">
+    <button class="modal-close" onclick="closeModal('resource-add')">✕</button>
+    <h2>+ Add resource</h2>
+    <p class="modal-sub">Add a new article to the Resource Library. It will be saved to the backend.</p>
+    <div class="modal-error" id="resourceAddError"></div>
+    <input type="text" id="resAddTitle" placeholder="Title"/>
+    <textarea id="resAddSummary" placeholder="Short summary (shown on card)" rows="2"></textarea>
+    <textarea id="resAddContent" placeholder="Full content (paragraphs separated by blank lines). Use **text** for bold." rows="5"></textarea>
+    <select id="resAddCategory">
+      <option value="general">General</option>
+      <option value="period">Period</option>
+      <option value="health">Body Health</option>
+      <option value="mood">Emotions</option>
+      <option value="hygiene">Hygiene</option>
+      <option value="nutrition">Nutrition</option>
+    </select>
+    <input type="number" id="resAddMins" placeholder="Read time (minutes)" value="5" min="1" max="60" style="margin-bottom:12px;"/>
+    <input type="text" id="resAddIcon" placeholder="Icon (emoji, e.g. 📖)" value="📖" style="margin-bottom:12px;"/>
+    <input type="text" id="resAddTags" placeholder="Tags (comma-separated)" style="margin-bottom:12px;"/>
+    <button class="cta-primary cta-rect" style="width:100%" onclick="submitResource()">Add resource</button>
+  </div>
+</div>
+
+<!-- NEW POST MODAL -->
+<div class="overlay" id="modal-post">
+  <div class="modal">
+    <button class="modal-close" onclick="closeModal('post')">✕</button>
+    <h2>Ask a Question 💬</h2>
+    <p class="modal-sub">Share what's on your mind. Anonymous posting is always available.</p>
+    <div class="modal-error" id="postError"></div>
+    <input type="text" id="postTitle" placeholder="Your question or topic title…"/>
+    <textarea id="postBody" placeholder="Share more details here…" style="min-height:120px;"></textarea>
+    <select id="postTopic" style="margin-bottom:12px;">
+      <option value="">Choose a topic…</option>
+      <option value="period">Period 🩸</option>
+      <option value="health">Body Health 🌿</option>
+      <option value="mood">Emotions 🧡</option>
+      <option value="hygiene">Hygiene 🧴</option>
+      <option value="general">General 💬</option>
+    </select>
+    <label class="anon-toggle" style="margin-bottom:16px;display:flex;"><input type="checkbox" id="postAnon"/> Post anonymously</label>
+    <button class="cta-primary" style="width:100%" onclick="submitPost()">Share Post</button>
+  </div>
+</div>
+
+<!-- COMMENTS MODAL (per post) -->
+<div class="overlay" id="modal-comments">
+  <div class="modal modal-comments">
+    <button class="modal-close" onclick="closeModal('comments')">✕</button>
+    <h2>💬 Comments</h2>
+    <div class="comments-post-title" id="commentsPostTitle"></div>
+    <div class="comments-list" id="commentsList">
+      <div class="loading-row"><div class="spinner"></div> Loading…</div>
+    </div>
+    <div class="comments-add">
+      <label class="anon-toggle" style="margin-bottom:8px;"><input type="checkbox" id="commentAnon"/> Post anonymously</label>
+      <textarea id="commentText" placeholder="Write a reply…" rows="2"></textarea>
+      <button class="cta-primary" onclick="submitComment()">Reply</button>
+    </div>
+  </div>
+</div>
+
+<!-- STORY MODAL -->
+<div class="overlay" id="modal-story">
+  <div class="modal">
+    <button class="modal-close" onclick="closeModal('story')">✕</button>
+    <h2>Share Your Story ✍️</h2>
+    <p class="modal-sub">Your words could help someone feel seen. Stories go through a quick moderation review before appearing.</p>
+    <div class="modal-error" id="storyError"></div>
+    <input type="text" id="storyTitle" placeholder="Give your story a title…"/>
+    <textarea id="storyBody" placeholder="Write your story here…" style="min-height:130px;"></textarea>
+    <input type="text" id="storyAge" placeholder="Age or role (optional — e.g. age 15, parent)"/>
+    <label class="anon-toggle" style="margin-bottom:16px;display:flex;"><input type="checkbox" id="storyAnon" checked/> Share anonymously</label>
+    <button class="cta-primary" style="width:100%" onclick="submitStory()">Submit Story</button>
+  </div>
+</div>
+
+<footer>
+  <p>Part of the <a href="#">LunaCare Project</a> — menstrual health awareness for everyone 🌿</p>
+  <div class="footer-links">
+    <a href="#">Privacy</a>
+    <a href="#">Community Guidelines</a>
+    <a href="#">Contact</a>
+  </div>
+</footer>
+
+<script type="module" src="js/main.js"></script>
+
+<!-- Discussion Thread Modal -->
+<div class="overlay" id="modal-thread">
+  <div class="thread-modal">
+    <button class="thread-modal-close" onclick="closeModal('thread')">✕</button>
+    <div id="thread-modal-post"></div>
+    <div class="thread-modal-replies-section">
+      <p class="disc-card-comments-head">💬 Replies</p>
+      <div id="thread-modal-replies-list"></div>
+    </div>
+    <div class="disc-card-comments-form" style="margin-top:16px;">
+      <textarea class="comment-text-inline" id="thread-modal-textarea" placeholder="Write a reply… (Shift+Enter for new line)" rows="3" onkeydown="if(event.key==='Enter'&&!event.shiftKey){event.preventDefault();submitThreadModalReply()}"></textarea>
+      <label class="anon-toggle"><input type="checkbox" id="thread-modal-anon"/> Post anonymously</label>
+      <button type="button" class="comment-submit-inline" onclick="submitThreadModalReply()">Reply</button>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>
