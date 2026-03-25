@@ -1445,7 +1445,12 @@ window.submitThreadModalReply = async function() {
   const text = textarea ? textarea.value.trim() : '';
   const isAnonymous = anonBox ? anonBox.checked : false;
 
-  if (!text || text.length < 2) { toast('Reply is too short.', 'error'); return; }
+  const cleanText = text.trim();
+
+if (!cleanText || cleanText.length < 5) {
+  toast('Reply is too short.', 'error');
+  return;
+}
 
   let username = null;
   if (!isAnonymous) {
