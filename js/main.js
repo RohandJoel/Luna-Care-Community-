@@ -757,7 +757,7 @@ window.submitCommentInline = async function(postId) {
   const text = textarea ? textarea.value.trim() : '';
   const isAnonymous = anonBox ? anonBox.checked : false;
 
-  if (!text || text.length < 10) { toast('Reply is too short.', 'error'); return; }
+  if (!text || text.length < 2) { toast('Reply is too short.', 'error'); return; }
 
   let username = null;
   if (!isAnonymous) {
@@ -1445,12 +1445,7 @@ window.submitThreadModalReply = async function() {
   const text = textarea ? textarea.value.trim() : '';
   const isAnonymous = anonBox ? anonBox.checked : false;
 
-  const cleanText = text.trim();
-
-if (!cleanText || cleanText.length < 5) {
-  toast('Reply is too short.', 'error');
-  return;
-}
+  if (!text || text.length < 2) { toast('Reply is too short.', 'error'); return; }
 
   let username = null;
   if (!isAnonymous) {
